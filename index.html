@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Waffles for Justice</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --navy:    #1A2E4A;
+      --orange:  #E8621A;
+      --white:   #FFFFFF;
+      --offwhite:#F5F2ED;
+      --muted:   #7A8A99;
+      --light:   #EEF2F7;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--offwhite);
+      color: var(--navy);
+      overflow-x: hidden;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--navy);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 4rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 70% 20%, rgba(232,98,26,0.18) 0%, transparent 60%),
+                  radial-gradient(ellipse at 20% 80%, rgba(232,98,26,0.10) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .hero-tag {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.2s forwards;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 9vw, 7rem);
+      font-weight: 900;
+      color: var(--white);
+      line-height: 1.0;
+      margin-bottom: 0.3rem;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.4s forwards;
+    }
+
+    .hero h1 span { color: var(--orange); }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
+      color: rgba(255,255,255,0.65);
+      margin: 1.8rem auto 2.8rem;
+      max-width: 580px;
+      line-height: 1.65;
+      font-weight: 300;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.6s forwards;
+    }
+
+    .hero-cta {
+      display: inline-block;
+      background: var(--orange);
+      color: var(--white);
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 1rem 2.5rem;
+      border-radius: 3px;
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      transition: transform 0.2s, box-shadow 0.2s;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.8s forwards;
+    }
+
+    .hero-cta:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(232,98,26,0.35);
+    }
+
+    .waffle-emoji {
+      font-size: 3.5rem;
+      margin-bottom: 1.2rem;
+      display: block;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.1s forwards;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255,255,255,0.3);
+      font-size: 0.78rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      animation: pulse 2s infinite;
+    }
+
+    /* ── STATS ── */
+    .stats {
+      background: var(--orange);
+      padding: 3.5rem 2rem;
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      flex-wrap: wrap;
+    }
+
+    .stat {
+      text-align: center;
+      padding: 1.5rem 3.5rem;
+      border-right: 1px solid rgba(255,255,255,0.25);
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .stat:last-child { border-right: none; }
+
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 5vw, 3.8rem);
+      font-weight: 900;
+      color: var(--white);
+      display: block;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.8);
+      margin-top: 0.5rem;
+      line-height: 1.4;
+    }
+
+    /* ── SECTION BASE ── */
+    section { padding: 6rem 2rem; }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 0.8rem;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+    }
+
+    .section-body {
+      font-size: 1.05rem;
+      color: #4A5568;
+      line-height: 1.8;
+      font-weight: 300;
+    }
+
+    /* ── HOOK SECTION ── */
+    .hook {
+      background: var(--white);
+    }
+
+    .hook blockquote {
+      border-left: 4px solid var(--orange);
+      padding-left: 1.8rem;
+      margin: 2.5rem 0;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+      color: var(--navy);
+      font-style: italic;
+      line-height: 1.5;
+    }
+
+    /* ── ILRC SECTION ── */
+    .ilrc {
+      background: var(--navy);
+    }
+
+    .ilrc .section-title { color: var(--white); }
+    .ilrc .section-body  { color: rgba(255,255,255,0.65); }
+
+    .ilrc-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.2rem;
+      margin-top: 2.5rem;
+    }
+
+    .ilrc-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-left: 3px solid var(--orange);
+      padding: 1.4rem 1.6rem;
+      border-radius: 2px;
+    }
+
+    .ilrc-card-icon { font-size: 1.5rem; margin-bottom: 0.6rem; display: block; }
+
+    .ilrc-card-text {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.6;
+    }
+
+    /* $10 test highlight */
+    .impact-box {
+      background: var(--orange);
+      padding: 1.5rem 2rem;
+      border-radius: 3px;
+      margin-top: 2.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    .impact-box-icon { font-size: 2rem; flex-shrink: 0; }
+
+    .impact-box-text {
+      font-size: 1rem;
+      color: var(--white);
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    .impact-box-text strong { font-size: 1.15rem; }
+
+    /* ── EVENT SECTION ── */
+    .event { background: var(--offwhite); }
+
+    .event-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+
+    @media (max-width: 600px) {
+      .event-grid { grid-template-columns: 1fr; }
+      .stat { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.2); }
+      .stat:last-child { border-bottom: none; }
+    }
+
+    .event-card {
+      background: var(--white);
+      padding: 2rem;
+      border-radius: 3px;
+      box-shadow: 0 4px 20px rgba(26,46,74,0.07);
+      border-top: 3px solid var(--orange);
+    }
+
+    .event-card-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 0.8rem;
+    }
+
+    .event-card ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .event-card ul li {
+      font-size: 0.95rem;
+      color: var(--navy);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      line-height: 1.5;
+    }
+
+    .event-card ul li span:first-child { flex-shrink: 0; }
+
+    /* ── BUSINESS MATH ── */
+    .math { background: var(--light); }
+
+    .math-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem;
+      margin-top: 2.5rem;
+    }
+
+    @media (max-width: 640px) {
+      .math-cards { grid-template-columns: 1fr; }
+    }
+
+    .math-card {
+      background: var(--white);
+      border-radius: 3px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(26,46,74,0.06);
+      border-bottom: 3px solid var(--orange);
+    }
+
+    .math-card-label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 0.7rem;
+    }
+
+    .math-card-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.2rem;
+      font-weight: 900;
+      color: var(--navy);
+      line-height: 1;
+      margin-bottom: 0.7rem;
+    }
+
+    .math-card-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .math-banner {
+      background: var(--navy);
+      padding: 1.2rem 2rem;
+      border-radius: 3px;
+      margin-top: 1.5rem;
+      text-align: center;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--white);
+    }
+
+    /* ── CLOSE / CTA ── */
+    .close-section {
+      background: var(--navy);
+      text-align: center;
+      padding: 8rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .close-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(232,98,26,0.2) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .close-section h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3.8rem);
+      font-weight: 900;
+      color: var(--white);
+      line-height: 1.15;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .close-section h2 span { color: var(--orange); }
+
+    .close-tagline {
+      font-size: 1.15rem;
+      color: rgba(255,255,255,0.55);
+      font-style: italic;
+      font-family: 'Playfair Display', serif;
+      margin-bottom: 3rem;
+      position: relative;
+    }
+
+    .close-meta {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 0.08em;
+      margin-top: 3rem;
+      position: relative;
+    }
+
+    .donate-btn {
+      display: inline-block;
+      background: var(--orange);
+      color: var(--white);
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 1.1rem 3rem;
+      border-radius: 3px;
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative;
+    }
+
+    .donate-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 35px rgba(232,98,26,0.4);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #0F1E2E;
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.3);
+    }
+
+    footer a { color: var(--orange); text-decoration: none; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.3; }
+      50%       { opacity: 0.7; }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <section class="hero">
+    <span class="waffle-emoji">🧇</span>
+    <p class="hero-tag">Clark High School · April 15th · All 3 Lunch Periods</p>
+    <h1>Waffles for <span>Justice</span></h1>
+    <p class="hero-sub">
+      Fresh homemade waffles. A $2 suggested donation. And every single dollar goes to the Immigrant Legal Resource Center.
+    </p>
+    <a href="https://www.ilrc.org/donate" target="_blank" class="hero-cta">Donate to the ILRC →</a>
+    <p class="scroll-hint">↓ scroll</p>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat">
+      <span class="stat-num">1 in 3</span>
+      <p class="stat-label">immigrants face deportation<br>without ever speaking to a lawyer</p>
+    </div>
+    <div class="stat">
+      <span class="stat-num">11M+</span>
+      <p class="stat-label">undocumented immigrants<br>living in the U.S.</p>
+    </div>
+    <div class="stat">
+      <span class="stat-num">19+</span>
+      <p class="stat-label">languages ILRC distributes<br>Red Cards in</p>
+    </div>
+  </div>
+
+  <!-- THE PROBLEM -->
+  <section class="hook">
+    <div class="container reveal">
+      <p class="section-label">The Problem</p>
+      <h2 class="section-title">Inhumane policies.<br>Real consequences.</h2>
+      <blockquote>
+        "Did you know that 1 in 3 immigrants in the U.S. faces deportation without ever speaking to a lawyer?"
+      </blockquote>
+      <p class="section-body">
+        Immigration policies across the U.S. continue to separate families, violate basic human rights, and leave millions without legal support. Our goal is simple: fight these inhumane policies — and ensure every immigrant has access to the legal help they deserve.
+      </p>
+    </div>
+  </section>
+
+  <!-- THE ILRC -->
+  <section class="ilrc">
+    <div class="container reveal">
+      <p class="section-label" style="color: var(--orange);">Our Partner</p>
+      <h2 class="section-title">Immigrant Legal<br>Resource Center</h2>
+      <p class="section-body">
+        The ILRC is 100% focused on immigration law — no distractions, just results. They're one of the most trusted organizations fighting for immigrant rights in the country.
+      </p>
+
+      <div class="ilrc-cards">
+        <div class="ilrc-card">
+          <span class="ilrc-card-icon">⚖️</span>
+          <p class="ilrc-card-text">100% focused on immigration law — nothing else</p>
+        </div>
+        <div class="ilrc-card">
+          <span class="ilrc-card-icon">📚</span>
+          <p class="ilrc-card-text">Trains thousands of lawyers & advocates nationwide</p>
+        </div>
+        <div class="ilrc-card">
+          <span class="ilrc-card-icon">🃏</span>
+          <p class="ilrc-card-text">Distributes Red Cards in 19+ languages to protect immigrant rights</p>
+        </div>
+      </div>
+
+      <div class="impact-box">
+        <span class="impact-box-icon">💰</span>
+        <p class="impact-box-text">
+          <strong>Just $5 prints ~10 Red Cards</strong> — know-your-rights guides for immigrants facing ICE, in their own language.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE EVENT -->
+  <section class="event">
+    <div class="container reveal">
+      <p class="section-label">The Fundraiser</p>
+      <h2 class="section-title">Come find us.</h2>
+      <p class="section-body">Fresh waffles, made right in front of you. Every dollar raised goes straight to the ILRC.</p>
+
+      <div class="event-grid">
+        <div class="event-card">
+          <p class="event-card-label">🧇 The Event</p>
+          <ul>
+            <li><span>🧇</span><span>Fresh homemade waffles — made right in front of you</span></li>
+            <li><span>💛</span><span>All proceeds go to the ILRC — supporting immigrant legal rights</span></li>
+            <li><span>🤝</span><span>Every waffle = a step toward justice</span></li>
+          </ul>
+        </div>
+        <div class="event-card">
+          <p class="event-card-label">📍 When & Where</p>
+          <ul>
+            <li><span>📍</span><span><strong>Clark High School</strong></span></li>
+            <li><span>📅</span><span><strong>April 15th</strong></span></li>
+            <li><span>⏰</span><span>Available during all 3 lunch periods</span></li>
+            <li><span>🧇</span><span><strong>$2 suggested donation</strong> per waffle</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BUSINESS MATH -->
+  <section class="math">
+    <div class="container reveal">
+      <p class="section-label">The Numbers</p>
+      <h2 class="section-title">Your dollar makes<br>a real difference.</h2>
+
+      <div class="math-cards">
+        <div class="math-card">
+          <p class="math-card-label">The Spending</p>
+          <p class="math-card-value">$30</p>
+          <p class="math-card-desc">Budget Tier — waffle mix, ingredients & supplies</p>
+        </div>
+        <div class="math-card">
+          <p class="math-card-label">The ROI</p>
+          <p class="math-card-value">5×</p>
+          <p class="math-card-desc">"We spend $30 to raise $150"</p>
+        </div>
+        <div class="math-card">
+          <p class="math-card-label">The Multiplier</p>
+          <p class="math-card-value">75+</p>
+          <p class="math-card-desc">Waffles served across 3 lunch periods</p>
+        </div>
+      </div>
+
+      <div class="math-banner">
+        Every $2 waffle = ~4 Red Cards printed for immigrants who need them most
+      </div>
+    </div>
+  </section>
+
+  <!-- CLOSE -->
+  <section class="close-section">
+    <div class="container">
+      <h2>Vote for Waffles for Justice —<br>and help us turn every <span>$2</span> into change.</h2>
+      <p class="close-tagline">No Borders. Just Batter. 🧇</p>
+      <a href="https://www.ilrc.org/donate" target="_blank" class="donate-btn">Donate to the ILRC →</a>
+      <p class="close-meta">Clark High School · April 15th · All 3 Lunch Periods · $2 Suggested Donation<br><br>
+        All proceeds benefit the <a href="https://www.ilrc.org" target="_blank">Immigrant Legal Resource Center (ILRC)</a>
+      </p>
+    </div>
+  </section>
+
+  <footer>
+    <div style="max-width:700px;margin:0 auto;">
+      <p style="font-size:0.9rem;color:rgba(255,255,255,0.5);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:1.2rem;">Impressum</p>
+      <p style="color:rgba(255,255,255,0.7);font-size:0.88rem;line-height:1.8;">
+        <strong style="color:white;">Arthur Kaiser</strong><br>
+        📧 <a href="mailto:wafflesforjustice@gmail.com">wafflesforjustice@gmail.com</a>
+      </p>
+      <p style="margin-top:1rem;color:rgba(255,255,255,0.45);font-size:0.82rem;line-height:1.7;">
+        This is a non-commercial project. No goods or services are sold through this website.<br>
+        All proceeds from the fundraiser are donated directly to the Immigrant Legal Resource Center (ILRC).
+      </p>
+      <p style="margin-top:1.2rem;font-size:0.7rem;color:rgba(255,255,255,0.2);line-height:1.6;">
+        ⚠️ This website was created as part of a school English project and does not represent a real fundraiser. No actual event will take place.
+      </p>
+      <p style="margin-top:1.5rem;color:rgba(255,255,255,0.25);font-size:0.78rem;">
+        Waffles for Justice · April 15th &nbsp;|&nbsp; Benefiting <a href="https://www.ilrc.org" target="_blank">ilrc.org</a>
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(r => observer.observe(r));
+  </script>
+</body>
+</html>
